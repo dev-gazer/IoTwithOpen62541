@@ -21,11 +21,11 @@ def get_last_message():
     return response
 
 url = "opc.tcp://localhost:4845/server"
-namespace = "http://test.opcualex.de"
+namespace = "http://iot.opcualex.de"
 
 async def main():
     print(f"Connecting to {url} ...")
-    time.sleep(50)
+    time.sleep(20)
     send_msg("Ich bin online für dich.")
     async with Client(url=url) as client:
         nsidx = await client.get_namespace_index(namespace)
@@ -36,7 +36,7 @@ async def main():
                 res = response["message"]["text"].lower()
                 if int(time.time()) - response["message"]["date"] < 25 and response["message"]["message_id"] != last_replied:
                     if res in ["hi", "hallo"]:
-                        send_msg("Hi, alles gut? Was willst du wissen? Ich kann jetzt gerade nur die Temperatur informieren.")
+                        send_msg("Hi, alles gut? Was willst du wissen? Ich kann jetzt gerade nur die Temperatur ausmessen.")
                     elif  res == "temperatur":
                         res = await client.nodes.objects.call_method(f"{nsidx}:get temperature")
                         send_msg(f"Die Temperatur ist gerade {res.strip('0')}0°C bei euch.")
