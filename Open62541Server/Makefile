@@ -1,4 +1,4 @@
-BINARY=bin
+BINARY=server
 CODEDIRS=. lib
 INCDIRS=. ./include/ # can be list
 
