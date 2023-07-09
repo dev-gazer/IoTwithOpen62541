@@ -38,8 +38,11 @@ async def main():
                     if res in ["hi", "hello"]:
                         send_msg("Hi, how are you? I can only inform you about the temperature. Please send me the 'temperature' command.")
                     elif  res == "temperature":
-                        res = await client.nodes.objects.call_method(f"{nsidx}:get temperature")
-                        send_msg(f"Your living room temperature is {res.strip('0')}0°C.")
+                        try:
+                            res = await client.nodes.objects.call_method(f"{nsidx}:get temperature")
+                            send_msg(f"Your living room temperature is {res.strip('0')}0°C.")
+                        except asyncio.exceptions.TimeoutError as err:
+                            send_msg(f"Try again. {err}")
                     else:
                         send_msg("I didn't understand! Please send hi.")
                     last_replied = response["message"]["message_id"]
